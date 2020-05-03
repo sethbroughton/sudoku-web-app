@@ -1,4 +1,4 @@
-# soduku
+# sudoku-web-app
 
 ## Project setup
 ```
