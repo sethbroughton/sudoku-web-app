@@ -1,19 +1,50 @@
 <template>
+<div>
+  <h1 class="title"> Sudoku Solver </h1>
+  <h3> Please enter your starter numbers </h3>
+<nav class="level">
+  <div class="level-left">
   <div class="sudoku-board">
     <div v-for="(n, i) in 9" v-bind:key="i">
       <div v-for="(n, j) in 9" v-bind:key="j">
       <input type="number" min=1 max=9 v-model.number.lazy="board[i][j]" class="cell"/>
       </div>
     </div>
-    <div id="example-1">
-        <button v-on:click="displayBoard">Solve</button>
-    </div>
+    <div>
+        <button class="button is-success is-large is-fullwidth" 
+        v-on:click.prevent="displayBoard"
+        v-bind:class="isLoading">Solve</button>
+        <button class="button is-light is-large" v-on:click.prevent="resetBoard">Reset</button>
+    </div>  
   </div>
+  </div>
+    <div class="level-right">
+  <article class="message" v-show="solved">
+    <div class="message-header">
+      <p>Runtime Statistics</p>
+    </div>
+    <div class="message-body">
+      <div>
+      Calculation Time: <strong>{{programTime}} milliseconds </strong>
+      </div>
+      <div>
+      Number of Backtracks: {{backtracks}}
+      </div>
+      Learn more about the method used to solve the puzzle <a href="https://en.wikipedia.org/wiki/Backtracking">HERE </a>
+  </div>  
+  </article>
+  </div>
+</nav>
+</div>
 </template>
 
 <script>
   export default {
-    data() { return {
+    data() { return { 
+      programTime: 0,
+      backtracks: 0,
+      solved: false,
+      isLoading: '',
       board: [
         ['','','','','','','','',''],
         ['','','','','','','','',''],
@@ -29,7 +60,6 @@
     methods: {
       checkGuess(num, row, col, board) {
         //Check Row
-        //let board = this.board;
         let i = row;
         for(let j = 0; j<board.length; j++){
           if(board[i][j]==num){
@@ -57,18 +87,16 @@
         }, 
 
       solveSudoku(board){
-        //let board = this.board;
         for(let row = 0; row<board.length; row++){
           for(let col = 0; col<board.length; col++){
             if(board[row][col]==''){
               for(let n = 1; n<=9; n++){
                 if(this.checkGuess(n, row, col, board)){
                   board[row][col] = n;
-                  this.$forceUpdate();
-
                   if(this.solveSudoku(board)){
                     return true;
                   } else {
+                    this.backtracks = this.backtracks + 1;
                     board[row][col] = '';
                   }
                 } 
@@ -77,17 +105,42 @@
             }
           }
         }
-this.board = board;
-return true;
+    this.board = board;
+    return true;
       }, 
 
   displayBoard(){
+    let now = performance.now();
+    this.isLoading = 'is-loading';
     let board = this.board; 
     this.solveSudoku(board);
-    console.log(board);
+    this.solved = true;
+    this.isLoading = '';
+    let finish = performance.now();
+    this.programTime = (finish-now);
     this.$forceUpdate();
 
+  }, 
+
+  resetBoard(){
+
+    let board =  [
+        ['','','','','','','','',''],
+        ['','','','','','','','',''],
+        ['','','','','','','','',''],
+        ['','','','','','','','',''],
+        ['','','','','','','','',''],
+        ['','','','','','','','',''],
+        ['','','','','','','','',''],
+        ['','','','','','','','',''],
+        ['','','','','','','','',''],
+        ];
+    this.board = board;
+    this.solved = false;
+    this.backtracks = 0;
+
   }
+
       }
     }
   
@@ -96,17 +149,21 @@ return true;
   .sudoku-board {
     display: flex;
     flex-wrap: wrap;
-    width: 1200px;
-    height: 1200px;
+    width: 800px;
+    height: 800px;
+
   }
    .cell {
-        width: 64px;
-        height: 64px;
+        width: 50px;
+        height: 50px;
         border: 2px solid rgb(75,75,75);
         font-size: 42px;
 
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+    .message {
+      width: 500px
     }
 </style>
