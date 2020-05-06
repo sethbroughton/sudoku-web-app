@@ -12,9 +12,10 @@
     </div>
     <div>
         <button class="button is-success is-large is-fullwidth" 
-        v-on:click.prevent="displayBoard"
+        v-on:click="displayBoard"
         v-bind:class="isLoading">Solve</button>
-        <button class="button is-light is-large" v-on:click.prevent="resetBoard">Reset</button>
+        <button class="button is-light is-large" v-on:click="resetBoard">Reset</button>
+        <button class="button is-dark is-large" v-on:click="LoadPuzzle">Load a Random Sudoku</button>
     </div>  
   </div>
   </div>
