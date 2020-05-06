@@ -140,6 +140,18 @@
     this.solved = false;
     this.backtracks = 0;
 
+  }, 
+
+  loadPuzzle(){
+    const puzzlePromise = fetch(`http://localhost:8080/sudoku/api/puzzle`);
+    puzzlePromise
+    .then((response)=>{
+      return response.json();
+    })
+    .then((data)=>
+    this.board = data
+    )
+    this.$forceUpdate();
   }
 
       }
