@@ -15,7 +15,7 @@
         v-on:click="displayBoard"
         v-bind:class="isLoading">Solve</button>
         <button class="button is-light is-large" v-on:click="resetBoard">Reset</button>
-        <button class="button is-dark is-large" v-on:click="LoadPuzzle">Load a Random Sudoku</button>
+        <button class="button is-dark is-large" v-on:click="loadPuzzle">Load a Random Sudoku</button>
     </div>  
   </div>
   </div>
@@ -43,6 +43,7 @@
   export default {
     data() { return { 
       programTime: 0,
+      values: {},
       backtracks: 0,
       solved: false,
       isLoading: '',
@@ -143,15 +144,16 @@
   }, 
 
   loadPuzzle(){
+    console.log()
     const puzzlePromise = fetch(`http://localhost:8080/sudoku/api/puzzle`);
     puzzlePromise
     .then((response)=>{
       return response.json();
     })
     .then((data)=>
-    this.board = data
+    this.values = data
     )
-    this.$forceUpdate();
+    this.board = this.values.values;
   }
 
       }

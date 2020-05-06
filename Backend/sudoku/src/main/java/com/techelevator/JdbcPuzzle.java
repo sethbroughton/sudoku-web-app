@@ -21,7 +21,7 @@ public class JdbcPuzzle implements PuzzleDao {
 	public Puzzle getRandomPuzzle() {
 		Puzzle myPuzzle = new Puzzle();
 		int[][] values = new int[][] {
-				{0,0,0,0,0,0,0,0,0},
+				{5,0,0,0,0,0,0,0,0},
 				{0,0,0,0,0,0,0,0,0},
 				{0,0,0,0,0,0,0,0,0},
 				{0,0,0,0,0,0,0,0,0},
