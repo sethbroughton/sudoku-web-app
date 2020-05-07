@@ -2,41 +2,43 @@
 <div>
   <h1 class="title"> Sudoku Solver </h1>
   <h3> Please enter your starter numbers </h3>
-<nav class="level">
-  <div class="level-left">
-  <div class="sudoku-board">
-    <div v-for="(n, i) in 9" v-bind:key="i">
-      <div v-for="(n, j) in 9" v-bind:key="j">
-      <input type="number" min=1 max=9 v-model.number.lazy="board[i][j]" class="cell"/>
-      </div>
+  <div class="columns is-3">
+    <div class="column is-one-third">
+      <div class="sudoku-board">
+        <div v-for="(n, i) in 9" v-bind:key="i">
+          <div v-for="(n, j) in 9" v-bind:key="j">
+            <input type="number" min=1 max=9 v-model.number.lazy="board[i][j]" class="cell"/>
+          </div>
+        </div>
+        <button class="button is-light" v-on:click="resetBoard">Reset</button>
+       </div>
     </div>
-    <div>
-        <button class="button is-success is-large is-fullwidth" 
+    <div class="column">  
+      <div class="buttons">
+        <button class="button is-success" 
         v-on:click="displayBoard"
         v-bind:class="isLoading">Solve</button>
-        <button class="button is-light is-large" v-on:click="resetBoard">Reset</button>
-        <button class="button is-dark is-large" v-on:click="loadPuzzle">Load a Random Sudoku</button>
-    </div>  
-  </div>
-  </div>
-    <div class="level-right">
-  <article class="message" v-show="solved">
-    <div class="message-header">
-      <p>Runtime Statistics</p>
-    </div>
-    <div class="message-body">
-      <div>
-      Calculation Time: <strong>{{programTime}} milliseconds </strong>
+        
+        <button class="button is-dark" v-on:click="loadPuzzle">Load a Random Sudoku</button>
       </div>
-      <div>
-      Number of Backtracks: {{backtracks}}
-      </div>
-      Learn more about the method used to solve the puzzle <a href="https://en.wikipedia.org/wiki/Backtracking">HERE </a>
-  </div>  
-  </article>
+      <article class="message" v-show="solved">
+        <div class="message-header">
+          <p>Runtime Statistics</p>
+        </div>
+        <div class="message-body">
+          <div>
+          Calculation Time: <strong>{{programTime}} milliseconds </strong>
+          </div>
+          <div>
+          Number of Backtracks: {{backtracks}}
+          </div>
+          Learn more about the method used to solve the puzzle <a href="https://en.wikipedia.org/wiki/Backtracking">HERE </a>
+        </div>  
+      </article>
+    </div> 
   </div>
-</nav>
 </div>
+
 </template>
 
 <script>
@@ -89,6 +91,7 @@
         }, 
 
       solveSudoku(board){
+        
         for(let row = 0; row<board.length; row++){
           for(let col = 0; col<board.length; col++){
             if(board[row][col]==''){
@@ -121,7 +124,6 @@
     let finish = performance.now();
     this.programTime = (finish-now);
     this.$forceUpdate();
-
   }, 
 
   resetBoard(){
@@ -144,7 +146,8 @@
   }, 
 
   loadPuzzle(){
-    console.log()
+    this.backtracks = 0;
+    this.solved = false;
     const puzzlePromise = fetch(`http://localhost:8080/sudoku/api/puzzle`);
     puzzlePromise
     .then((response)=>{
