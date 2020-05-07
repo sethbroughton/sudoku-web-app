@@ -38,29 +38,15 @@ public class JdbcPuzzle implements PuzzleDao {
 		SqlRowSet results = jdbcTemplate.queryForRowSet(SqlSelectRandomPuzzle);
 		while (results.next()) {
 			String puzzleString = results.getString("puzzle");
-			System.out.println(puzzleString);
-			int[] array = new int[9];
-			int column = 0;
-			int row = 0;
-			for (int j = 0; j < puzzleString.length() - 1; j++) {
-				String digit = puzzleString.substring(j, j + 1);
-				if (column < 9) {
-					array[column] = Integer.parseInt(digit);
-					column++;
-					if (column == 8) {
-						values[row] = array;
-						if (row < 8) {
-							row++;
-						}
-						column = 0;
-					}
-				}
+			String[] array = puzzleString.split("");
+			
+			for (int i = 0; i < array.length; i++) {
+				int digit = Integer.parseInt(array[i]);
+				int column = i % 9;
+				int row = i / 9;
+				values[row][column] = digit;
 			}
 		}
-		for(int i = 0; i<values.length; i++) {
-			System.out.println(values[0][i]);
-		}
-		
 		myPuzzle.setValues(values);
 		return myPuzzle;
 	}
