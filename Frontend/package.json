@@ -3,13 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service start",
+    "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "start": "node server.js",
+    "gh-pages-deploy": "node scripts/gh-pages-deploy.js"
   },
   "dependencies": {
     "bulma": "^0.8.2",
     "core-js": "^3.6.4",
+    "express": "^4.17.1",
+    "serve-static": "^1.14.1",
     "vue": "^2.6.11"
   },
   "devDependencies": {
@@ -19,7 +23,8 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "execa": "latest"
   },
   "eslintConfig": {
     "root": true,
